@@ -1,13 +1,30 @@
 // import reportWebVitals from './config/reportWebVitals';
+import React from "react";
 import ReactDOM from "react-dom/client";
 import "./assets/theme/index.css";
 import "./config/globals.jsx";
-import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { publicRoutes } from "./config/routes.jsx";
+import { ErrorPage } from "./pages/errorPage.jsx";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
-
 const App = () => {
-	return <div className="bg-slate-400">Web Project</div>;
+	const routes = publicRoutes;
+	return (
+		<BrowserRouter>
+			<Routes>
+				{routes.map((route, index) => (
+					<Route
+						key={index}
+						path={route.path}
+						exact={route.exact}
+						element={route.element}
+					/>
+				))}
+				<Route exact path="*" element={<ErrorPage />} />
+			</Routes>
+		</BrowserRouter>
+	);
 };
 
 root.render(
