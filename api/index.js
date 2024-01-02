@@ -3,8 +3,8 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 
 const app = express();
-const port = process.env.PORT || 8000;
 dotenv.config();
+const port = process.env.PORT || 8000;
 
 mongoose
 	.connect(process.env.MONGO_URL)
