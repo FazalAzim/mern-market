@@ -4,12 +4,12 @@ import ReactDOM from "react-dom/client";
 import "./assets/theme/index.css";
 import "./config/globals.jsx";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { publicRoutes } from "./config/routes.jsx";
+import { privateRoutes, publicRoutes } from "./config/routes.jsx";
 import { ErrorPage } from "./pages/errorPage.jsx";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const App = () => {
-	const routes = publicRoutes;
+	const routes = privateRoutes;
 	return (
 		<BrowserRouter>
 			<Routes>
