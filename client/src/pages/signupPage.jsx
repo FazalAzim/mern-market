@@ -38,7 +38,7 @@ const signupPage = () => {
 			<Header />
 			<div className="p-3 max-w-lg mx-auto">
 				<h1 className="text-3xl text-center font-semibold my-7">
-					<span className="text-slate-500">Sign</span>
+					<span className="text-slate-500 mr-1">Sign</span>
 					<span className="text-slate-700">Up</span>
 				</h1>
 				<form onSubmit={handleSubmit} className="flex flex-col gap-3">
@@ -74,7 +74,7 @@ const signupPage = () => {
 					<p>Have an account?</p>
 					<span
 						onClick={() => navigate(RouterHelper.login())}
-						className="text-blue-700"
+						className="text-blue-700 cursor-pointer"
 					>
 						Sign in
 					</span>
