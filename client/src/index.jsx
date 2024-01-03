@@ -9,7 +9,7 @@ import { ErrorPage } from "./pages/errorPage.jsx";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const App = () => {
-	const routes = privateRoutes;
+	const routes = publicRoutes;
 	return (
 		<BrowserRouter>
 			<Routes>
