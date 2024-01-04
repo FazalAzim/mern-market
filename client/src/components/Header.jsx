@@ -7,7 +7,6 @@ import { RouterHelper } from "../helpers/router.helper";
 const Header = () => {
 	const navigate = useNavigate();
 	const auth = useSelector((state) => state.user);
-	console.log(auth);
 	return (
 		<header className="bg-slate-200 shadow-md">
 			<div className="flex justify-between items-center max-w-6xl mx-auto p-3">

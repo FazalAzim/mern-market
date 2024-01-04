@@ -30,7 +30,6 @@ const loginPage = () => {
 			body: JSON.stringify(formData),
 		});
 		const data = await response.json();
-		console.log(data, "...response data");
 		setLoading(false);
 		dispatch(setSignedIn(true));
 		dispatch(setUser(data));
