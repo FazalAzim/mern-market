@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Header } from "../components";
+import { Header, Oauth } from "../components";
 import { RouterHelper } from "../helpers/router.helper";
 
 const signupPage = () => {
@@ -69,6 +69,7 @@ const signupPage = () => {
 					>
 						{loading ? "Loading..." : "Sign Up"}
 					</button>
+					<Oauth />
 				</form>
 				<div className="flex gap-2 mt-5">
 					<p>Have an account?</p>

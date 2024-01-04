@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setSignedIn, setUser } from "../redux/user/userSlice";
-import { Header } from "../components";
+import { Header, Oauth } from "../components";
 import { RouterHelper } from "../helpers/router.helper";
 
 const loginPage = () => {
@@ -68,6 +68,7 @@ const loginPage = () => {
 					>
 						{loading ? "Loading..." : "Sign In"}
 					</button>
+					<Oauth />
 				</form>
 				<div className="flex gap-2 mt-5">
 					<p>Dont have an account?</p>
