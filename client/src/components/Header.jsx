@@ -1,10 +1,13 @@
 import React from "react";
 import { FaSearch } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { RouterHelper } from "../helpers/router.helper";
 
 const Header = () => {
 	const navigate = useNavigate();
+	const auth = useSelector((state) => state.user);
+	console.log(auth);
 	return (
 		<header className="bg-slate-200 shadow-md">
 			<div className="flex justify-between items-center max-w-6xl mx-auto p-3">
@@ -33,12 +36,21 @@ const Header = () => {
 					>
 						About
 					</li>
-					<li
-						onClick={() => navigate(RouterHelper.login())}
-						className="font-medium text-slate-700 hover:underline"
-					>
-						Sign In
-					</li>
+					{auth.isSignedIn ? (
+						<img
+							src={auth.user.avatar}
+							alt="Profile"
+							className="rounded-full h-7 w-7 object-cover cursor-pointer"
+							onClick={() => navigate(RouterHelper.profilePath())}
+						/>
+					) : (
+						<li
+							onClick={() => navigate(RouterHelper.login())}
+							className="font-medium text-slate-700 hover:underline"
+						>
+							Sign In
+						</li>
+					)}
 				</ul>
 			</div>
 		</header>

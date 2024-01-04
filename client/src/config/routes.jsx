@@ -1,4 +1,10 @@
-import { HomePage, LoginPage, SignUpPage, AboutPage } from "../pages";
+import {
+	HomePage,
+	LoginPage,
+	SignUpPage,
+	AboutPage,
+	ProfilePage,
+} from "../pages";
 import { Navigate } from "react-router-dom";
 
 export const publicRoutes = [
@@ -36,6 +42,10 @@ export const privateRoutes = [
 	{
 		path: "/about",
 		element: <AboutPage />,
+	},
+	{
+		path: "/profile",
+		element: <ProfilePage />,
 	},
 	...restrictedRoutes,
 ];

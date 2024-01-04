@@ -11,6 +11,7 @@ const Oauth = () => {
 			const provider = new GoogleAuthProvider();
 			const auth = getAuth(app);
 			const result = await signInWithPopup(auth, provider);
+			console.log(result, "...google auth frontend side");
 			const response = await fetch("/api/auth/google", {
 				method: "POST",
 				headers: {
@@ -19,7 +20,7 @@ const Oauth = () => {
 				body: JSON.stringify({
 					name: result.user.displayName,
 					email: result.user.email,
-					photo: result.user.photo,
+					photo: result.user.photoURL,
 				}),
 			});
 			const data = await response.json();

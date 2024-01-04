@@ -3,4 +3,5 @@ export const RouterHelper = {
 	aboutPath: () => `/about`,
 	login: () => `/login`,
 	signup: () => `/signup`,
+	profilePath: () => `/profile`,
 };
