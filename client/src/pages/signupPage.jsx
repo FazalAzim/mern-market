@@ -30,8 +30,8 @@ const signupPage = () => {
 		if (data.success === false) {
 			setLoading(false);
 		}
+		navigate("/");
 		setLoading(false);
-		console.log(data, "...Data");
 	};
 	return (
 		<>

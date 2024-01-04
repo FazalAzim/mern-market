@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setSignedIn, setUser } from "../redux/user/userSlice";
 import { Header } from "../components";
 import { RouterHelper } from "../helpers/router.helper";
 
@@ -8,6 +10,7 @@ const loginPage = () => {
 	const [loading, setLoading] = useState(false);
 
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
 
 	const handleChange = (event) => {
 		setFormData({
@@ -27,11 +30,14 @@ const loginPage = () => {
 			body: JSON.stringify(formData),
 		});
 		const data = await response.json();
+		console.log(data, "...response data");
+		setLoading(false);
+		dispatch(setSignedIn(true));
+		dispatch(setUser(data));
 		if (data.success === false) {
 			setLoading(false);
+			dispatch(setSignedIn(false));
 		}
-		setLoading(false);
-		console.log(data, "...Data");
 	};
 	return (
 		<>

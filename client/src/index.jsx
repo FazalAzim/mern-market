@@ -4,12 +4,17 @@ import ReactDOM from "react-dom/client";
 import "./assets/theme/index.css";
 import "./config/globals.jsx";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { privateRoutes, publicRoutes } from "./config/routes.jsx";
 import { ErrorPage } from "./pages/errorPage.jsx";
+import { store } from "./redux/store.js";
+import { Provider } from "react-redux";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const App = () => {
-	const routes = publicRoutes;
+	const auth = useSelector((state) => state.user);
+	const routes = auth.isSignedIn ? privateRoutes : publicRoutes;
+
 	return (
 		<BrowserRouter>
 			<Routes>
@@ -29,7 +34,9 @@ const App = () => {
 
 root.render(
 	<React.StrictMode>
-		<App />
+		<Provider store={store}>
+			<App />
+		</Provider>
 	</React.StrictMode>
 );
 
