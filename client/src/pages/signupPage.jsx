@@ -69,8 +69,10 @@ const signupPage = () => {
 					>
 						{loading ? "Loading..." : "Sign Up"}
 					</button>
-					<Oauth />
 				</form>
+				<div className="pt-3">
+					<Oauth key={0} />
+				</div>
 				<div className="flex gap-2 mt-5">
 					<p>Have an account?</p>
 					<span
