@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { app } from "../firebase";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import {
 	getDownloadURL,
 	getStorage,
@@ -8,14 +8,17 @@ import {
 	uploadBytesResumable,
 } from "firebase/storage";
 import { Header } from "../components";
+import { setUser } from "../redux/user/userSlice";
 
 const profilePage = () => {
 	const [file, setFile] = useState(undefined);
 	const [progress, setProgress] = useState(0);
 	const [formData, setFormData] = useState({});
 	const [fileError, setFileError] = useState(false);
+	const [dataLoading, setDataLoading] = useState(false);
 
 	const fileRef = useRef(null);
+	const dispatch = useDispatch();
 	const { user } = useSelector((state) => state.user);
 
 	useEffect(() => {
@@ -45,6 +48,29 @@ const profilePage = () => {
 			}
 		);
 	};
+
+	const handleChange = async (event) => {
+		setFormData({ ...formData, [event.target.id]: event.target.value });
+	};
+	const handleSubmit = async (event) => {
+		event.preventDefault();
+		try {
+			setDataLoading(true);
+			const response = await fetch(`/api/user/update/${user._id}`, {
+				method: "PATCH",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(formData),
+			});
+			const data = await response.json();
+			dispatch(setUser(data));
+			setDataLoading(false);
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
 	return (
 		<>
 			<Header />
@@ -53,7 +79,7 @@ const profilePage = () => {
 					<span className="text-slate-500">Pro</span>
 					<span className="text-slate-700">file</span>
 				</h1>
-				<form className="flex flex-col gap-3">
+				<form onSubmit={handleSubmit} className="flex flex-col gap-3">
 					<input
 						onChange={(e) => setFile(e.target.files[0])}
 						type="file"
@@ -86,25 +112,30 @@ const profilePage = () => {
 						type="text"
 						placeholder="username"
 						id="username"
+						defaultValue={user.username}
+						onChange={handleChange}
 						className="border focus:outline-none p-4 rounded-lg"
 					/>
 					<input
 						type="text"
 						placeholder="email"
 						id="email"
+						defaultValue={user.email}
+						onChange={handleChange}
 						className="border focus:outline-none p-4 rounded-lg"
 					/>
 					<input
-						type="text"
+						type="password"
 						placeholder="password"
 						id="password"
+						onChange={handleChange}
 						className="border focus:outline-none  p-4 rounded-lg"
 					/>
 					<button
-						disabled={progress != null && progress < 100}
+						disabled={dataLoading}
 						className="bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
 					>
-						update
+						{dataLoading ? "loading..." : "update"}
 					</button>
 				</form>
 				<div className="flex justify-between mt-3">
