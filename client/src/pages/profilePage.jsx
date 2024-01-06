@@ -89,6 +89,18 @@ const profilePage = () => {
 		}
 	};
 
+	const handleSignOut = async () => {
+		try {
+			const response = await fetch("/api/auth/signout");
+			await response.json();
+			dispatch(setUser({}));
+			dispatch(setSignedIn(false));
+			navigate("/");
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
 	return (
 		<>
 			<Header />
@@ -164,7 +176,9 @@ const profilePage = () => {
 					>
 						Delete Account
 					</span>
-					<span className="text-red-700 cursor-pointer">Sign out</span>
+					<span onClick={handleSignOut} className="text-red-700 cursor-pointer">
+						Sign out
+					</span>
 				</div>
 				<span className="text-red-700 mt-5">
 					{updateSuccess ? "User update successfully" : ""}

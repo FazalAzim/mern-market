@@ -11,7 +11,6 @@ const Oauth = () => {
 			const provider = new GoogleAuthProvider();
 			const auth = getAuth(app);
 			const result = await signInWithPopup(auth, provider);
-			console.log(result, "...google auth frontend side");
 			const response = await fetch("/api/auth/google", {
 				method: "POST",
 				headers: {
