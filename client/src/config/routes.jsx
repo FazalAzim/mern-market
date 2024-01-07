@@ -4,6 +4,7 @@ import {
 	SignUpPage,
 	AboutPage,
 	ProfilePage,
+	ListingPage,
 } from "../pages";
 import { Navigate } from "react-router-dom";
 
@@ -46,6 +47,10 @@ export const privateRoutes = [
 	{
 		path: "/profile",
 		element: <ProfilePage />,
+	},
+	{
+		path: "/listing",
+		element: <ListingPage />,
 	},
 	...restrictedRoutes,
 ];

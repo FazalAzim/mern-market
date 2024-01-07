@@ -10,6 +10,7 @@ import {
 import { Header } from "../components";
 import { setSignedIn, setUser } from "../redux/user/userSlice";
 import { useNavigate } from "react-router-dom";
+import { RouterHelper } from "../helpers/router.helper";
 
 const profilePage = () => {
 	const [file, setFile] = useState(undefined);
@@ -167,6 +168,12 @@ const profilePage = () => {
 						className="bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
 					>
 						{dataLoading ? "loading..." : "update"}
+					</button>
+					<button
+						onClick={() => navigate(RouterHelper.listingPath())}
+						className="w-full bg-red-700 text-white p-3 rounded-lg uppercase hover:opacity-95"
+					>
+						create listing
 					</button>
 				</form>
 				<div className="flex justify-between mt-3">

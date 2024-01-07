@@ -4,4 +4,5 @@ export const RouterHelper = {
 	login: () => `/login`,
 	signup: () => `/signup`,
 	profilePath: () => `/profile`,
+	listingPath: () => `/listing`,
 };
