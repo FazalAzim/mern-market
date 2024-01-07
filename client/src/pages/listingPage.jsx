@@ -1,6 +1,78 @@
+import { useState } from "react";
 import { Header } from "../components";
+import {
+	getDownloadURL,
+	getStorage,
+	ref,
+	uploadBytesResumable,
+} from "firebase/storage";
+import { app } from "../firebase";
 
 const listingPage = () => {
+	const [files, setFiles] = useState([]);
+	const [imageUploadError, setImageUploadError] = useState(false);
+	const [upLoading, setUpLoading] = useState(false);
+	const [formData, setFormData] = useState({
+		imageUrls: [],
+	});
+
+	const handleImageSubmit = () => {
+		if (files.length > 0 && files.length + formData.imageUrls.length < 7) {
+			setUpLoading(true);
+			setImageUploadError(false);
+			const promises = [];
+			for (let index = 0; index < files.length; index++) {
+				promises.push(storeImage(files[index]));
+			}
+			Promise.all(promises)
+				.then((urls) => {
+					setFormData({
+						...formData,
+						imageUrls: formData.imageUrls.concat(urls),
+					});
+					setImageUploadError(false);
+					setUpLoading(false);
+				})
+				.catch((error) => {
+					setImageUploadError("Image upload failed (2 mb max per image)");
+					setUpLoading(false);
+				});
+		} else {
+			setImageUploadError("You can only upload 6 images at a time");
+			setUpLoading(false);
+		}
+	};
+
+	const storeImage = async (file) => {
+		return new Promise((resolve, reject) => {
+			const storage = getStorage(app);
+			const storageRef = ref(storage, file.name);
+			const uploadTask = uploadBytesResumable(storageRef, file);
+			uploadTask.on(
+				"state_changed",
+				(snapshot) => {
+					(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+				},
+				(error) => {
+					reject(error);
+				},
+
+				() => {
+					getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+						resolve(downloadURL);
+					});
+				}
+			);
+		});
+	};
+
+	const handleRemoveImage = (index) => {
+		setFormData({
+			...formData,
+			imageUrls: formData.imageUrls.filter((_, item) => item !== index),
+		});
+	};
+
 	return (
 		<>
 			<Header />
@@ -127,12 +199,41 @@ const listingPage = () => {
 								id="images"
 								accept="image/*"
 								multiple
+								onChange={(e) => setFiles(e.target.files)}
 								className="p-3 border border-gray-300 rounded w-full "
 							/>
-							<button className="p-3 text-gray-700 border border-green-700 rounded uppercase hover:shadow-lg disabled:opacity-80">
-								Upload
+							<button
+								type="button"
+								disabled={upLoading}
+								onClick={handleImageSubmit}
+								className="p-3 text-gray-700 border border-green-700 rounded uppercase hover:shadow-lg disabled:opacity-80"
+							>
+								{upLoading ? "Uploading..." : "Upload"}
 							</button>
 						</div>
+						<p className="text-red-700">
+							{imageUploadError && imageUploadError}
+						</p>
+						{formData.imageUrls.length > 0 &&
+							formData.imageUrls.map((url, index) => (
+								<div
+									key={index}
+									className="p-3 flex justify-between border items-center"
+								>
+									<img
+										src={url}
+										alt="listing image"
+										className="w-20 h-20 object-contain rounded-lg"
+									/>
+									<button
+										type="button"
+										onClick={() => handleRemoveImage(index)}
+										className="p-3 bg-slate-700 text-white rounded-lg uppercase hover:opacity-75"
+									>
+										Delete
+									</button>
+								</div>
+							))}
 						<button className="p-3 bg-slate-700 text-white rounded-lg uppercase hover:opacity-95 disabled:opacity-80">
 							Create Listing
 						</button>
